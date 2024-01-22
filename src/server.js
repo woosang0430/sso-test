@@ -31,33 +31,32 @@ wss.on("connection", (socket) => {
   });
 
   socket.on("message", (message) => {
+    console.log("client send message: ", message);
+
     const parseMessage = JSON.parse(message);
+
+    console.log("parsed message: ", parseMessage);
 
     let userInfo = "";
 
-    if (parseMessage.rptype === "getknoxsso") {
+    if (parseMessage.rqtype === "getknoxsso") {
       userInfo = JSON.stringify({
+        data: {
+          key: "UrFCegWO8ttXWCEHIpFptw==",
+          result: "success",
+          userInfo: "jAit4UfdyunQ2G+iUJrXUw==",
+        },
         rpcode: "RETURN_SUCCESS",
-        data: {
-          key: "✅ Success",
-          userInfo: { name: "woosang" },
-        },
       });
-    } else if (parseMessage.rptype === "") {
+    } else if (parseMessage.rqtype === "") {
       userInfo = JSON.stringify({
+        detail: "empty message",
         rpcode: "EMPTY_BOX",
-        data: {
-          key: "⚠️ Failed : empty id",
-          userInfo: null,
-        },
       });
     } else {
       userInfo = JSON.stringify({
+        detail: "JSON format invalid.",
         rpcode: "ERROR",
-        data: {
-          key: "❗️ Not Found : not found id",
-          userInfo: null,
-        },
       });
     }
 
