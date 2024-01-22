@@ -5,7 +5,7 @@ import express from "express";
 
 const app = express();
 
-const port = 29282;
+const port = 3000;
 
 app.set("view engine", "pug");
 app.set("views", __dirname + "/views");
