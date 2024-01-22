@@ -26,7 +26,7 @@ const $SocketLoginBtn = document.querySelector("#socket-login");
 
 $SocketLoginBtn.addEventListener("click", () => {
   getSsoData({
-    rptype: $socketIdInput.value,
+    rqtype: "getknoxsso",
     data: "KCB10TRAY0020",
     token: "",
   });
@@ -44,11 +44,11 @@ ssoSocket.addEventListener("message", (message) => {
   try {
     const ssoData = JSON.parse(message.data);
 
-    const { rqcode } = ssoData;
+    const { rpcode } = ssoData;
 
     const { key, userInfo } = ssoData.data;
 
-    switch (rqcode) {
+    switch (rpcode) {
       case "EMPTY_BOX":
         $resultInput.value = -1;
         $keyInput.value = key;
@@ -65,7 +65,7 @@ ssoSocket.addEventListener("message", (message) => {
         $userInfoInput.value = userInfo;
         break;
       default:
-        throw new Error("Invalid rqcode.");
+        throw new Error("Invalid rpcode.");
     }
   } catch (error) {
     console.log("Occurred error in received message event().", error);
