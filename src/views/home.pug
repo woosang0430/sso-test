@@ -1,0 +1,26 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title sso socket test
+    link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+  body
+    header
+      h1 sso socket test
+    main
+      input#socket-input(placeholder="ID", required, type="text")
+
+      p success code: 
+        strong getknoxsso
+
+      button#socket-login SSO login
+
+      label result :
+        input#result-input(type="text", readonly)
+      label key :
+        input#key-input(type="text", readonly)
+      label userInfo :
+        input#userInfo-input(type="text", readonly)
+
+    script(src="/public/js/app.js")
