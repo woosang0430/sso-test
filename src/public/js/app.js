@@ -12,7 +12,9 @@ const getSsoData = (param) => {
   try {
     const strParam = JSON.stringify(param);
 
-    ssoSocket.send(strParam);
+    const byteParam = new TextEncoder().encode(strParam);
+
+    ssoSocket.send(byteParam);
   } catch (error) {
     console.error("Occurred error in GetSsoData().", error);
   }
@@ -42,11 +44,11 @@ ssoSocket.addEventListener("message", (message) => {
   try {
     const ssoData = JSON.parse(message.data);
 
-    const { rpcode } = ssoData;
+    const { rqcode } = ssoData;
 
     const { key, userInfo } = ssoData.data;
 
-    switch (rpcode) {
+    switch (rqcode) {
       case "EMPTY_BOX":
         $resultInput.value = -1;
         $keyInput.value = key;
@@ -63,7 +65,7 @@ ssoSocket.addEventListener("message", (message) => {
         $userInfoInput.value = userInfo;
         break;
       default:
-        throw new Error("Invalid rpcode.");
+        throw new Error("Invalid rqcode.");
     }
   } catch (error) {
     console.log("Occurred error in received message event().", error);
