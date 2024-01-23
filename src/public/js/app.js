@@ -2,10 +2,6 @@ const sendUrl = "ws://localhost:3000";
 
 const ssoSocket = new WebSocket(sendUrl);
 
-let result;
-let key;
-let userInfo;
-
 const getSsoData = (param) => {
   console.log("GeoSsoData() called.");
 
@@ -26,7 +22,7 @@ const $SocketLoginBtn = document.querySelector("#socket-login");
 
 $SocketLoginBtn.addEventListener("click", () => {
   getSsoData({
-    rqtype: "getknoxsso",
+    rqtype: $socketIdInput.value, // success rqtype: getknoxsso
     data: "KCB10TRAY0020",
     token: "",
   });
@@ -40,29 +36,32 @@ const $keyInput = document.querySelector("#key-input");
 
 const $userInfoInput = document.querySelector("#userInfo-input");
 
+const $errorDetailInput = document.querySelector("#error-detail-input");
+
 ssoSocket.addEventListener("message", (message) => {
   try {
     const ssoData = JSON.parse(message.data);
 
     const { rpcode } = ssoData;
 
-    const { key, userInfo } = ssoData.data;
-
     switch (rpcode) {
       case "EMPTY_BOX":
         $resultInput.value = -1;
-        $keyInput.value = key;
-        $userInfoInput.value = userInfo;
+        $keyInput.value = "";
+        $userInfoInput.value = "";
+        $errorDetailInput.value = ssoData.detail;
         break;
       case "RETURN_SUCCESS":
         $resultInput.value = 1;
-        $keyInput.value = key;
-        $userInfoInput.value = JSON.stringify(userInfo);
+        $keyInput.value = ssoData.data.key;
+        $userInfoInput.value = ssoData.data.userInfo;
+        $errorDetailInput.value = "";
         break;
       case "ERROR":
         $resultInput.value = 0;
-        $keyInput.value = key;
-        $userInfoInput.value = userInfo;
+        $keyInput.value = "";
+        $userInfoInput.value = "";
+        $errorDetailInput.value = ssoData.detail;
         break;
       default:
         throw new Error("Invalid rpcode.");
