@@ -1,5 +1,5 @@
 import http from "http";
-import WebSocket, { WebSocketServer } from "ws";
+import WebSocket from "ws";
 
 import express from "express";
 
@@ -37,10 +37,10 @@ wss.on("connection", (socket) => {
 
     console.log("parsed message: ", parseMessage);
 
-    let userInfo = "";
+    let response = "";
 
     if (parseMessage.rqtype === "getknoxsso") {
-      userInfo = JSON.stringify({
+      response = JSON.stringify({
         data: {
           key: "UrFCegWO8ttXWCEHIpFptw==",
           result: "success",
@@ -49,18 +49,18 @@ wss.on("connection", (socket) => {
         rpcode: "RETURN_SUCCESS",
       });
     } else if (parseMessage.rqtype === "") {
-      userInfo = JSON.stringify({
+      response = JSON.stringify({
         detail: "empty message",
         rpcode: "EMPTY_BOX",
       });
     } else {
-      userInfo = JSON.stringify({
-        detail: "JSON format invalid.",
+      response = JSON.stringify({
+        detail: "error message",
         rpcode: "ERROR",
       });
     }
 
-    socket.send(userInfo);
+    socket.send(response);
   });
 });
 
