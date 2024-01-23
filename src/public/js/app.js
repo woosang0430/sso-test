@@ -1,4 +1,4 @@
-const sendUrl = "ws://localhost:3000";
+const sendUrl = "ws://172.16.28.221:3000";
 
 const ssoSocket = new WebSocket(sendUrl);
 
